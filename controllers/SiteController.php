@@ -52,7 +52,7 @@ class SiteController extends Controller
         return $this->render('index');
     }
 
-    public function actionLogin()
+    public function actionClient()
     {
         if (!\Yii::$app->user->isGuest) {
             return $this->goHome();
@@ -62,7 +62,22 @@ class SiteController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
             return $this->goBack();
         }
-        return $this->render('login', [
+        return $this->render('client', [
+            'model' => $model,
+        ]);
+    }
+    
+    public function actionAdmin()
+    {
+        if (!\Yii::$app->user->isGuest) {
+            return $this->goHome();
+        }
+
+        $model = new LoginForm();
+        if ($model->load(Yii::$app->request->post()) && $model->login()) {
+            return $this->goBack();
+        }
+        return $this->render('admin', [
             'model' => $model,
         ]);
     }
@@ -90,5 +105,15 @@ class SiteController extends Controller
     public function actionAbout()
     {
         return $this->render('about');
+    }
+    
+    public function actionRegistration()
+    {
+        return $this->render('registration');
+    }
+    
+    public function actionOtpVerify()
+    {
+        return $this->render('otp_verify');
     }
 }
