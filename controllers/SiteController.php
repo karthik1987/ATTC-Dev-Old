@@ -8,6 +8,7 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
+use app\models\ClientMaster;
 
 class SiteController extends Controller
 {
@@ -109,11 +110,24 @@ class SiteController extends Controller
     
     public function actionRegistration()
     {
-        return $this->render('registration');
+        $model = new ClientMaster();
+
+        if ($model->load(Yii::$app->request->post())) 
+        {
+            $model->save();
+            return $this->redirect(['index', 'msg' => 'success']);
+        } 
+        else 
+        {
+            return $this->render('registration', [
+                'model' => $model,
+            ]);
+        }
     }
     
     public function actionOtpVerify()
     {
-        return $this->render('otp_verify');
+        $renderMethod = Yii::$app->request->isAjax ? 'renderAjax' : 'render';
+        return $this->$renderMethod('otp_verify');
     }
 }
